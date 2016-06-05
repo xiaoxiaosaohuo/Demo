@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Message</title>
+	<style>
+
+
+	</style>
+</head>
+<body>
+
+
+
+	
+
+	<script>
+
+
+var Msg =function(){
+	function Message(){
+		this.div =null;
+	}
+	Message.prototype.create = function(){
+		this.div  = document.createElement("div");
+		this.div.setAttribute("class",'message');
+		this.div.style.cssText = "opacity:0;width:250px;height: 150px;border-radius: 5px;border:1px solid #333;background: rgba(0,0,0,0.7) ;-webkit-box-shadow: 7px 7px 5px -4px rgba(0,0,0,0.75);-moz-box-shadow: 7px 7px 5px -4px rgba(0,0,0,0.75);box-shadow: 7px 7px 5px -4px rgba(0,0,0,0.75);";
+		document.body.appendChild(this.div);
+		var div = this.div;
+		fadeIn(div,400,100);
+	}
+	Message.prototype.destroy =function(){
+		var div = this.div;
+		fadeOut(div,100,0);
+		
+	}
+	Message.prototype.setMessage = function(text,url){
+		this.create();
+		this.div.innerHTML ='<div class="mesageContent">'+text+'</div>';
+		this.div.style.background ='url('+url+') no-repeat rgba(0,0,0,0.7)';
+
+	}
+	Message.prototype.success =function(text){
+		this.setMessage("修改成功","2.png");
+		this.destroy();
+	}
+	Message.prototype.fail =function(text){
+		this.setMessage("修改失败","1.png");
+		this.destroy();
+	}
+
+
+	var setOpacity = function(elem,opacity){
+	elem.filters ? elem.style.filter = 'alpha(opacity=' +v+')':elem.style.opacity =opacity/100;
+
+
+}
+//淡入效果(含淡入到指定透明度)  
+function fadeIn(elem, speed, opacity){  
+    /* 
+     * 参数说明 
+     * elem==>需要淡入的元素 
+     * speed==>淡入速度,正整数(可选) 
+     * opacity==>淡入到指定的透明度,0~100(可选) 
+     */  
+    speed = speed || 20;  
+    opacity = opacity || 100;  
+    //显示元素,并将元素值为0透明度(不可见)  
+    elem.style.display = 'block';  
+    setOpacity(elem, 0);  
+    //初始化透明度变化值为0  
+    var val = 0;  
+    //循环将透明值以5递增,即淡入效果  
+    (function(){  
+        setOpacity(elem, val);  
+        val += 10;  
+        if (val <= opacity) {  
+            setTimeout(arguments.callee, speed)  
+        }  
+    })();  
+}  
+  
+//淡出效果(含淡出到指定透明度)  
+function fadeOut(elem, speed, opacity){  
+    /* 
+     * 参数说明 
+     * elem==>需要淡入的元素 
+     * speed==>淡入速度,正整数(可选) 
+     * opacity==>淡入到指定的透明度,0~100(可选) 
+     */  
+    speed = speed || 20;  
+    opacity = opacity || 0;  
+    //初始化透明度变化值为0  
+    var val = 100;  
+    //循环将透明值以5递减,即淡出效果  
+    (function(){  
+        setOpacity(elem, val);  
+        val -= 2;  
+        if (val >= opacity) {  
+
+            setTimeout(arguments.callee, speed);  
+
+        }else if (val <= 0) {  
+            //元素透明度为0后隐藏元素  
+            document.body.removeChild(elem);
+        }  
+    })(); 
+}
+
+return {
+	success:function(text){
+		var a =new Message();
+		return a.success(text);
+	},
+	fail:function(text){
+		var a =new Message();
+		return a.fail(text);
+	},
+	}
+}();
+Msg.success("修改成功");
+Msg.fail("修改失败");
+
+
+	</script>
+</body>
+</html>
